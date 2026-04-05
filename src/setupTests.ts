@@ -1,4 +1,14 @@
-import '@testing-library/jest-dom/extend-expect';
-import sizeMe from 'react-sizeme';
+import '@testing-library/jest-dom';
 
-sizeMe.noPlaceholders = true;
+// ResizeObserver is not available in jsdom; provide a no-op mock.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+(global as any).ResizeObserver = class {
+  // eslint-disable-next-line class-methods-use-this
+  observe() {}
+
+  // eslint-disable-next-line class-methods-use-this
+  unobserve() {}
+
+  // eslint-disable-next-line class-methods-use-this
+  disconnect() {}
+};

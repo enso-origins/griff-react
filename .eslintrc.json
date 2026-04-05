@@ -3,5 +3,13 @@
   "rules": {
     "react/jsx-props-no-spreading": "off",
     "react/state-in-constructor": "off"
-  }
+  },
+  "overrides": [
+    {
+      "files": ["**/*.ts?(x)"],
+      "rules": {
+        "react/prop-types": "off"
+      }
+    }
+  ]
 }

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import sizeMe from 'react-sizeme';
+import { useResizeDetector } from 'react-resize-detector';
 import ScalerContext from 'context/Scaler';
 import PointCollection from 'components/PointCollection';
 import InteractionLayer, { ZoomMode } from 'components/InteractionLayer';
@@ -207,9 +207,24 @@ const ScatterplotComponent = ({
 ScatterplotComponent.propTypes = propTypes;
 ScatterplotComponent.defaultProps = defaultProps;
 
-const SizedScatterplotComponent = sizeMe({
-  monitorHeight: true,
-})(ScatterplotComponent);
+const SizedScatterplotComponent = ({ size: explicitSize, ...rest }) => {
+  const { ref, width, height } = useResizeDetector();
+  const size = explicitSize || { width: width || 0, height: height || 0 };
+  return (
+    <div ref={ref} style={{ width: '100%', height: '100%' }}>
+      <ScatterplotComponent {...rest} size={size} />
+    </div>
+  );
+};
+SizedScatterplotComponent.propTypes = {
+  size: PropTypes.shape({
+    width: PropTypes.number.isRequired,
+    height: PropTypes.number.isRequired,
+  }),
+};
+SizedScatterplotComponent.defaultProps = {
+  size: undefined,
+};
 
 export default withDisplayName('Scatterplot', props => (
   <ScalerContext.Consumer>

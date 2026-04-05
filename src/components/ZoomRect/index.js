@@ -77,10 +77,8 @@ class ZoomRect extends React.Component {
     }
   }
 
-  onTouchStart = () => {
-    const {
-      event: { touches },
-    } = d3;
+  onTouchStart = event => {
+    const { touches } = event;
     if (touches.length === 1) {
       const [touch] = touches;
       const { pageX: x, pageY: y } = touch;
@@ -103,7 +101,7 @@ class ZoomRect extends React.Component {
 
   // TODO: A lot of this is duplicated with `zoomed` -- maybe they can be
   // consolidated?
-  onTouchMove = () => {
+  onTouchMove = event => {
     const { width, height } = this.props;
 
     const totalDistances = {
@@ -114,9 +112,7 @@ class ZoomRect extends React.Component {
       [Axes.y]: -height,
     };
 
-    const {
-      event: { touches },
-    } = d3;
+    const { touches } = event;
     let updates = null;
     if (touches.length === 1) {
       // If there was only one touch, then it was a drag event.
@@ -136,10 +132,8 @@ class ZoomRect extends React.Component {
     }
   };
 
-  onTouchEnd = () => {
-    const {
-      event: { touches },
-    } = d3;
+  onTouchEnd = event => {
+    const { touches } = event;
     if (touches.length === 0) {
       this.lastTouch = null;
     } else if (touches.length === 1) {
@@ -274,10 +268,20 @@ class ZoomRect extends React.Component {
   syncZoomingState = () => {
     const { zoomAxes } = this.props;
     if (Object.keys(zoomAxes).find(axis => zoomAxes[axis])) {
-      this.rectSelection.on('touchend', this.onTouchEnd, true);
-      this.rectSelection.on('touchmove', this.onTouchMove, true);
-      this.rectSelection.on('touchstart', this.onTouchStart, true);
-      this.rectSelection.call(this.zoom.on('zoom', this.zoomed));
+      this.rectSelection.on('touchend', event => this.onTouchEnd(event), true);
+      this.rectSelection.on(
+        'touchmove',
+        event => this.onTouchMove(event),
+        true
+      );
+      this.rectSelection.on(
+        'touchstart',
+        event => this.onTouchStart(event),
+        true
+      );
+      this.rectSelection.call(
+        this.zoom.on('zoom', event => this.zoomed(event))
+      );
       this.rectSelection.on('dblclick.zoom', null);
     } else {
       this.rectSelection.on('.zoom', null);
@@ -289,11 +293,9 @@ class ZoomRect extends React.Component {
    * a pointing device. However, {@link #onTouchMove()} is used to handle events
    * with touch sources (such as fingers on a touchscreen).
    */
-  zoomed = () => {
+  zoomed = event => {
     const { zoomAxes, itemIds, width, height } = this.props;
-    const {
-      event: { sourceEvent },
-    } = d3;
+    const { sourceEvent } = event;
 
     const totalDistances = {
       [Axes.time]: width,

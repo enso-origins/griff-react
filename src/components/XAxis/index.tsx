@@ -1,15 +1,15 @@
-import React from 'react';
-import * as d3 from 'd3';
-import { SizeMe, SizeMeProps } from 'react-sizeme';
 import AxisPlacement, {
   AxisPlacement as AxisPlacementType,
 } from 'components/AxisPlacement';
-import ScalerContext from 'context/Scaler';
-import ZoomRect from 'components/ZoomRect';
-import { createXScale, ScalerFunctionFactory } from 'utils/scale-helpers';
-import { Domain, Series } from 'external';
 import { DomainsByItemId } from 'components/Scaler';
+import ZoomRect from 'components/ZoomRect';
+import ScalerContext from 'context/Scaler';
+import * as d3 from 'd3';
+import { Domain, Series } from 'external';
+import React from 'react';
+import { useResizeDetector } from 'react-resize-detector';
 import { withDisplayName } from 'utils/displayName';
+import { createXScale, ScalerFunctionFactory } from 'utils/scale-helpers';
 
 export interface Props extends ScalerProps {
   axis: 'time' | 'x';
@@ -262,26 +262,27 @@ const XAxis: React.FC<Props> = ({
   );
 };
 
-export default withDisplayName('XAxis', (props: Props) => {
-  const newProps = { ...props };
-  if (props.width === undefined) {
-    delete newProps.width;
-  }
+const SizedXAxis = (props: Props) => {
+  const { ref, width } = useResizeDetector();
   return (
-    <ScalerContext.Consumer>
-      {({ domainsByItemId, subDomainsByItemId, series }: ScalerProps) => (
-        <SizeMe monitorWidth>
-          {({ size }: SizeMeProps) => (
-            <XAxis
-              series={series}
-              width={size.width || undefined}
-              {...newProps}
-              domainsByItemId={domainsByItemId}
-              subDomainsByItemId={subDomainsByItemId}
-            />
-          )}
-        </SizeMe>
-      )}
-    </ScalerContext.Consumer>
+    <div ref={ref} style={{ width: '100%' }}>
+      <XAxis
+        {...props}
+        width={props.width !== undefined ? props.width : width || undefined}
+      />
+    </div>
   );
-});
+};
+
+export default withDisplayName('XAxis', (props: Props) => (
+  <ScalerContext.Consumer>
+    {({ domainsByItemId, subDomainsByItemId, series }: ScalerProps) => (
+      <SizedXAxis
+        series={series}
+        {...props}
+        domainsByItemId={domainsByItemId}
+        subDomainsByItemId={subDomainsByItemId}
+      />
+    )}
+  </ScalerContext.Consumer>
+));

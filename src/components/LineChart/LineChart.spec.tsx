@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, wait } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 import { Base, MultiSeries, MultiSeriesCollection } from './LineChart.stories';
 
 const DEFAULT_SIZE = { width: 1000, height: 500 };
@@ -13,7 +13,7 @@ describe('LineChart', () => {
       getByTestId,
     } = render(<Base size={DEFAULT_SIZE} />);
 
-    await wait(() => {
+    await waitFor(() => {
       expect(queryAllByTestId('Line-Series-1')).toHaveLength(2);
     });
     expect(getAllByTestId('xAxis')).toHaveLength(2);
@@ -29,7 +29,7 @@ describe('LineChart', () => {
       getByTestId,
     } = render(<MultiSeries size={DEFAULT_SIZE} />);
 
-    await wait(() => {
+    await waitFor(() => {
       expect(queryAllByTestId('Line-Series-1')).toHaveLength(2);
       expect(queryAllByTestId('Line-Series-2')).toHaveLength(2);
       expect(queryAllByTestId('Line-Series-3')).toHaveLength(2);
@@ -50,7 +50,7 @@ describe('LineChart', () => {
       queryByTestId,
     } = render(<MultiSeriesCollection size={DEFAULT_SIZE} />);
 
-    await wait(() => {
+    await waitFor(() => {
       expect(queryAllByTestId('Line-Series-1')).toHaveLength(2);
       expect(queryAllByTestId('Line-Series-2')).toHaveLength(2);
       expect(queryAllByTestId('Line-Series-3')).toHaveLength(2);

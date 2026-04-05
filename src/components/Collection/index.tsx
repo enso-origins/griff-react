@@ -63,7 +63,6 @@ const Collection: React.FunctionComponent<Props & InternalProps> = ({
       return null;
     }
     return React.cloneElement(child as React.ReactElement<SeriesProps>, {
-      ...child.props,
       collectionId: id,
     });
   });

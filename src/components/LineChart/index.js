@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import sizeMe from 'react-sizeme';
+import { useResizeDetector } from 'react-resize-detector';
 import AxisCollection from 'components/AxisCollection';
 import ScalerContext from 'context/Scaler';
 import ContextChart from 'components/ContextChart';
@@ -81,52 +81,6 @@ const propTypes = {
 
   // The following props are all supplied by internals (eg, React).
   children: PropTypes.arrayOf(PropTypes.node),
-};
-
-const defaultProps = {
-  zoomable: true,
-  contextChart: {
-    visible: true,
-    height: 100,
-    isDefault: true,
-  },
-  crosshair: true,
-  onMouseMove: null,
-  onMouseOut: null,
-  onBlur: null,
-  onClick: null,
-  onClickAnnotation: null,
-  onDoubleClick: null,
-  onZoomXAxis: null,
-  // eslint-disable-next-line react/default-props-match-prop-types
-  series: [],
-  // eslint-disable-next-line react/default-props-match-prop-types
-  collections: [],
-  annotations: [],
-  ruler: {
-    visible: false,
-    timeLabel: () => {},
-    yLabel: () => {},
-    timestamp: null,
-  },
-  xAxisHeight: 50,
-  // eslint-disable-next-line react/default-props-match-prop-types
-  yAxisWidth: 50,
-  yAxisTicks: null,
-  width: 0,
-  height: 0,
-  xSubDomain: [],
-  xAxisFormatter: multiFormat,
-  xAxisPlacement: AxisPlacement.BOTTOM,
-  yAxisDisplayMode: AxisDisplayMode.ALL,
-  yAxisFormatter: Number,
-  onAxisMouseEnter: null,
-  onAxisMouseLeave: null,
-  areas: [],
-  onAreaDefined: null,
-  onAreaClicked: null,
-  pointWidth: 6,
-  children: [],
 };
 
 const getXAxisHeight = (xAxisHeight, xAxisPlacement) => {
@@ -221,40 +175,44 @@ const getYAxisPlacement = ({ collections, series, yAxisPlacement }) => {
   return yAxisPlacement || AxisPlacement.RIGHT;
 };
 
-const LineChart = props => {
-  const {
-    annotations,
-    areas,
-    children,
-    contextChart,
-    crosshair,
-    height: propHeight,
-    onAreaDefined,
-    onAreaClicked,
-    onAxisMouseEnter,
-    onAxisMouseLeave,
-    onClick,
-    onZoomXAxis,
-    onClickAnnotation,
-    onDoubleClick,
-    onMouseMove,
-    onMouseOut,
-    onBlur,
-    pointWidth,
-    size,
-    xSubDomain,
-    ruler,
-    width: propWidth,
-    xAxisHeight,
-    xAxisFormatter,
-    xAxisPlacement,
-    yAxisDisplayMode,
-    yAxisFormatter,
-    yAxisWidth,
-    yAxisTicks,
-    zoomable,
-  } = props;
-
+const LineChart = ({
+  annotations = [],
+  areas = [],
+  children = [],
+  contextChart = { visible: true, height: 100, isDefault: true },
+  crosshair = true,
+  height: propHeight = 0,
+  onAreaDefined = null,
+  onAreaClicked = null,
+  onAxisMouseEnter = null,
+  onAxisMouseLeave = null,
+  onClick = null,
+  onZoomXAxis = null,
+  onClickAnnotation = null,
+  onDoubleClick = null,
+  onMouseMove = null,
+  onMouseOut = null,
+  onBlur = null,
+  pointWidth = 6,
+  size,
+  xSubDomain = [],
+  ruler = {
+    visible: false,
+    timeLabel: () => {},
+    yLabel: () => {},
+    timestamp: null,
+  },
+  width: propWidth = 0,
+  xAxisHeight = 50,
+  xAxisFormatter = multiFormat,
+  xAxisPlacement = AxisPlacement.BOTTOM,
+  yAxisDisplayMode = AxisDisplayMode.ALL,
+  yAxisFormatter = Number,
+  yAxisWidth = 50,
+  yAxisTicks = null,
+  zoomable = true,
+  ...props
+} = {}) => {
   if (!size) {
     // Can't proceed without a size; just abort until react-sizeme feeds it
     // to the component.
@@ -265,12 +223,20 @@ const LineChart = props => {
 
   const width = propWidth || sizeWidth;
   const height = propHeight || sizeHeight;
-  const contextChartSpace = getContextChartHeight(props);
+  const propsForHelpers = {
+    ...props,
+    contextChart,
+    xAxisHeight,
+    xAxisPlacement,
+    yAxisDisplayMode,
+    yAxisWidth,
+  };
+  const contextChartSpace = getContextChartHeight(propsForHelpers);
   const chartWidth =
     width -
-    getYAxisCollectionWidth(AxisPlacement.LEFT, props) -
-    getYAxisCollectionWidth(AxisPlacement.RIGHT, props) -
-    getYAxisCollectionWidth(undefined, props);
+    getYAxisCollectionWidth(AxisPlacement.LEFT, propsForHelpers) -
+    getYAxisCollectionWidth(AxisPlacement.RIGHT, propsForHelpers) -
+    getYAxisCollectionWidth(undefined, propsForHelpers);
   const chartHeight = height - getXAxisHeight(xAxisHeight) - contextChartSpace;
   const chartSize = {
     width: Math.max(0, chartWidth),
@@ -280,7 +246,7 @@ const LineChart = props => {
   return (
     <Layout
       xAxisPlacement={xAxisPlacement}
-      yAxisPlacement={getYAxisPlacement(props)}
+      yAxisPlacement={getYAxisPlacement(propsForHelpers)}
       lineChart={
         <svg width={chartSize.width} height={chartSize.height}>
           {React.Children.map(children, child => {
@@ -363,48 +329,74 @@ const LineChart = props => {
   );
 };
 LineChart.propTypes = propTypes;
-LineChart.defaultProps = defaultProps;
+LineChart.defaultProps = {
+  annotations: [],
+  areas: [],
+  children: [],
+  contextChart: { visible: true, height: 100, isDefault: true },
+  crosshair: true,
+  height: 0,
+  onAreaDefined: null,
+  onAreaClicked: null,
+  onAxisMouseEnter: null,
+  onAxisMouseLeave: null,
+  onClick: null,
+  onClickAnnotation: null,
+  onDoubleClick: null,
+  onMouseMove: null,
+  onMouseOut: null,
+  onBlur: null,
+  onZoomXAxis: null,
+  pointWidth: 6,
+  ruler: {
+    visible: false,
+    timeLabel: () => {},
+    yLabel: () => {},
+    timestamp: null,
+  },
+  width: 0,
+  xAxisFormatter: multiFormat,
+  xAxisHeight: 50,
+  xAxisPlacement: AxisPlacement.BOTTOM,
+  xSubDomain: [],
+  yAxisDisplayMode: AxisDisplayMode.ALL,
+  yAxisFormatter: Number,
+  yAxisTicks: null,
+  yAxisWidth: 50,
+  zoomable: true,
+};
 
-const SizedLineChart = sizeMe({ monitorHeight: true })(LineChart);
-
-export default withDisplayName('LineChart', props => {
-  const newProps = { ...props };
-  if (props.size === undefined) {
-    delete newProps.size;
-  }
+const SizedLineChart = ({ size: explicitSize, ...rest }) => {
+  const { ref, width, height } = useResizeDetector();
+  const size = explicitSize || { width: width || 0, height: height || 0 };
   return (
-    <ScalerContext.Consumer>
-      {({ collections, series }) => (
-        <SizedLineChart
-          {...newProps}
-          collections={collections}
-          series={series}
-        />
-      )}
-    </ScalerContext.Consumer>
-  );
-});
-
-export const CustomSizeLineChart = props => {
-  const newProps = { ...props };
-  // eslint-disable-next-line react/prop-types
-  if (props.size === undefined) {
-    delete newProps.size;
-  }
-  return (
-    <ScalerContext.Consumer>
-      {({ collections, series }) =>
-        // eslint-disable-next-line react/prop-types
-        props.size !== undefined ? (
-          <LineChart {...newProps} collections={collections} series={series} />
-        ) : (
-          <SizedLineChart
-            {...newProps}
-            collections={collections}
-            series={series}
-          />
-        )
-      }
-    </ScalerContext.Consumer>
+    <div ref={ref} style={{ width: '100%', height: '100%' }}>
+      <LineChart {...rest} size={size} />
+    </div>
   );
 };
+SizedLineChart.propTypes = {
+  size: PropTypes.shape({
+    width: PropTypes.number.isRequired,
+    height: PropTypes.number.isRequired,
+  }),
+};
+SizedLineChart.defaultProps = {
+  size: undefined,
+};
+
+export default withDisplayName('LineChart', props => (
+  <ScalerContext.Consumer>
+    {({ collections, series }) => (
+      <SizedLineChart {...props} collections={collections} series={series} />
+    )}
+  </ScalerContext.Consumer>
+));
+
+export const CustomSizeLineChart = props => (
+  <ScalerContext.Consumer>
+    {({ collections, series }) => (
+      <SizedLineChart {...props} collections={collections} series={series} />
+    )}
+  </ScalerContext.Consumer>
+);

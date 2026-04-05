@@ -14,7 +14,7 @@ export default {
   title: 'Demo|components/RulerTooltip',
 
   decorators: [
-    (story: React.FC<StoryProps>) => {
+    (story: (props: StoryProps) => React.ReactElement | null) => {
       class FakeChart extends React.Component {
         state = {
           x: CHART_WIDTH / 2,

@@ -1,11 +1,15 @@
 {
-  "extends": "./node_modules/gts/tsconfig-google.json",
   "compilerOptions": {
+    "allowUnreachableCode": false,
+    "allowUnusedLabels": false,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitReturns": true,
     "declaration": false,
     "baseUrl": "src",
     "outDir": "build",
     "skipLibCheck": true,
-    "jsx": "react",
+    "jsx": "react-jsx",
     "allowJs": true,
     "target": "es5",
     "module": "es2015",

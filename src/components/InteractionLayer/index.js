@@ -47,42 +47,49 @@ class InteractionLayer extends React.Component {
     }
   }
 
-  // eslint-disable-next-line camelcase
-  UNSAFE_componentWillReceiveProps(nextProps) {
+  componentDidUpdate(prevProps) {
+    const { onAreaDefined, ruler, subDomainsByItemId, width } = this.props;
     const {
       subDomainsByItemId: prevSubDomainsByItemId,
-      ruler,
       width: prevWidth,
-    } = this.props;
-    // FIXME: Don't assume a single time domain
-    const {
-      width: nextWidth,
-      subDomainsByItemId: nextSubDomainsByItemId,
-    } = nextProps;
-    const { touchX, touchY } = this.state;
+    } = prevProps;
 
+    if (prevProps.onAreaDefined && !onAreaDefined) {
+      // They no longer care about areas; if we're building one, then remove it.
+      // eslint-disable-next-line react/no-did-update-set-state
+      this.setState({
+        area: null,
+      });
+    }
+
+    if (ruler.timestamp !== prevProps.ruler.timestamp) {
+      this.setRulerPosition(ruler.timestamp);
+    }
+
+    // Keep track of ruler position on subdomain/width update.
+    // FIXME: Don't assume a single time domain
+    const { touchX, touchY } = this.state;
     const prevTimeSubDomain = Axes.time(
       prevSubDomainsByItemId[Object.keys(prevSubDomainsByItemId)[0]]
     );
     const nextTimeSubDomain = Axes.time(
-      nextSubDomainsByItemId[Object.keys(nextSubDomainsByItemId)[0]]
+      subDomainsByItemId[Object.keys(subDomainsByItemId)[0]]
     );
 
     if (
       ruler &&
       ruler.visible &&
       touchX !== null &&
-      (!isEqual(prevTimeSubDomain, nextTimeSubDomain) ||
-        prevWidth !== nextWidth)
+      (!isEqual(prevTimeSubDomain, nextTimeSubDomain) || prevWidth !== width)
     ) {
-      // keep track on ruler on subdomain update
       const prevXScale = createXScale(prevTimeSubDomain, prevWidth);
-      const curXScale = createXScale(nextTimeSubDomain, nextWidth);
+      const curXScale = createXScale(nextTimeSubDomain, width);
       const ts = prevXScale.invert(touchX);
       const newXPos = curXScale(ts);
 
       // hide ruler if point went out to the left of subdomain
       if (newXPos < 0) {
+        // eslint-disable-next-line react/no-did-update-set-state
         this.setState({
           points: [],
           touchX: null,
@@ -94,25 +101,11 @@ class InteractionLayer extends React.Component {
       } else {
         // ruler should follow points during live loading and
         // panning and zooming on desktop
+        // eslint-disable-next-line react/no-did-update-set-state
         this.setState({ touchX: newXPos }, () => {
           this.processMouseMove(newXPos, touchY);
         });
       }
-    }
-  }
-
-  componentDidUpdate(prevProps) {
-    const { onAreaDefined, ruler } = this.props;
-    if (prevProps.onAreaDefined && !onAreaDefined) {
-      // They no longer care about areas; if we're building one, then remove it.
-      // eslint-disable-next-line react/no-did-update-set-state
-      this.setState({
-        area: null,
-      });
-    }
-
-    if (ruler.timestamp !== prevProps.ruler.timestamp) {
-      this.setRulerPosition(ruler.timestamp);
     }
   }
 

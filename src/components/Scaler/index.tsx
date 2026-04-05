@@ -30,7 +30,7 @@ interface DataContext {
 }
 
 export interface Props {
-  children: React.ReactChild | React.ReactChild[];
+  children: React.ReactNode;
   dataContext: DataContext;
 }
 
@@ -88,7 +88,7 @@ const findItemsWithChangedDomains = (
   return currentItems.reduce((acc: Item[], s) => {
     if (
       !previousItemsById[s.id] ||
-      haveDomainsChanged(previousItemsById[s.id] || {}, s)
+      haveDomainsChanged(previousItemsById[s.id] as Item, s)
     ) {
       return [...acc, s];
     }
@@ -360,7 +360,9 @@ class Scaler extends React.Component<Props, State> {
     const { domainsByItemId, subDomainsByItemId } = this.state;
     const newSubDomains = { ...subDomainsByItemId };
     Object.keys(changedDomainsById).forEach(itemId => {
-      newSubDomains[itemId] = { ...(subDomainsByItemId[itemId] || {}) };
+      newSubDomains[itemId] = {
+        ...(subDomainsByItemId[itemId] || {}),
+      } as Domains;
       Object.keys(changedDomainsById[itemId]).forEach(uncastAxis => {
         const axis: DomainAxis = uncastAxis as DomainAxis;
         let newSubDomain = changedDomainsById[itemId][axis];

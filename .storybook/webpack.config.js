@@ -27,6 +27,12 @@ module.exports = ({ config }) => {
   const resolvedModules = config.resolve.modules || [];
   config.resolve.modules = [...resolvedModules, path.resolve(process.cwd(), 'src')];
 
+  // react-resize-detector v12 requires Webpack 5 / ES modules support.
+  // Replace it with a lightweight CJS shim for Storybook's Webpack 4 build.
+  config.resolve.alias = {
+    ...config.resolve.alias,
+    'react-resize-detector': path.resolve(__dirname, 'mocks/react-resize-detector.js'),
+  };
 
   return config;
 };

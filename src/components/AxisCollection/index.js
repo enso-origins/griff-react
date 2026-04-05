@@ -29,19 +29,6 @@ const propTypes = {
   yAxisWidth: PropTypes.number,
 };
 
-const defaultProps = {
-  series: [],
-  collections: [],
-  zoomable: true,
-  ticks: 5,
-  yAxisWidth: 50,
-  axisDisplayMode: AxisDisplayMode.ALL,
-  yAxisPlacement: AxisPlacement.RIGHT,
-  onMouseEnter: null,
-  onMouseLeave: null,
-  tickFormatter: Number,
-};
-
 const onAxisMouseEnter = (seriesId, { onMouseEnter }) =>
   onMouseEnter ? e => onMouseEnter(e, seriesId) : null;
 
@@ -210,17 +197,17 @@ const renderPlaceholderAxis = (
 };
 
 const AxisCollection = ({
-  axisDisplayMode,
-  collections,
+  axisDisplayMode = AxisDisplayMode.ALL,
+  collections = [],
   height,
-  onMouseEnter,
-  onMouseLeave,
-  series,
-  tickFormatter,
-  ticks,
-  yAxisPlacement,
-  yAxisWidth,
-  zoomable,
+  onMouseEnter = null,
+  onMouseLeave = null,
+  series = [],
+  tickFormatter = Number,
+  ticks = 5,
+  yAxisPlacement = AxisPlacement.RIGHT,
+  yAxisWidth = 50,
+  zoomable = true,
 }) => {
   const calculatedWidth = []
     .concat(series)
@@ -283,7 +270,18 @@ const AxisCollection = ({
   );
 };
 AxisCollection.propTypes = propTypes;
-AxisCollection.defaultProps = defaultProps;
+AxisCollection.defaultProps = {
+  axisDisplayMode: AxisDisplayMode.ALL,
+  collections: [],
+  onMouseEnter: null,
+  onMouseLeave: null,
+  series: [],
+  tickFormatter: Number,
+  ticks: 5,
+  yAxisPlacement: AxisPlacement.RIGHT,
+  yAxisWidth: 50,
+  zoomable: true,
+};
 
 export default withDisplayName('AxisCollection', props => (
   <ScalerContext.Consumer>

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { SizeMe } from 'react-sizeme';
+import { useResizeDetector } from 'react-resize-detector';
 import ScalerContext from 'context/Scaler';
 import LineCollection from 'components/LineCollection';
 import XAxis from 'components/XAxis';
@@ -30,16 +30,6 @@ const propTypes = {
   subDomainsByItemId: GriffPropTypes.subDomainsByItemId.isRequired,
   updateDomains: GriffPropTypes.updateDomains.isRequired,
   width: PropTypes.number,
-};
-
-const defaultProps = {
-  width: 1,
-  height: 150,
-  annotations: [],
-  zoomable: true,
-  xAxisFormatter: multiFormat,
-  xAxisHeight: 50,
-  xAxisPlacement: AxisPlacement.BOTTOM,
 };
 
 const onUpdateSelection = (
@@ -77,17 +67,17 @@ const renderXAxis = (position, xAxis, { xAxisPlacement }) => {
 };
 
 const ContextChart = ({
-  annotations: propsAnnotations,
+  annotations: propsAnnotations = [],
   domainsByItemId,
-  height: propsHeight,
+  height: propsHeight = 150,
   series,
   subDomainsByItemId,
   updateDomains,
-  width,
-  xAxisFormatter,
-  xAxisHeight,
-  xAxisPlacement,
-  zoomable,
+  width = 1,
+  xAxisFormatter = multiFormat,
+  xAxisHeight = 50,
+  xAxisPlacement = AxisPlacement.BOTTOM,
+  zoomable = true,
 }) => {
   if (series.length === 0) {
     return null;
@@ -167,29 +157,44 @@ const ContextChart = ({
 };
 
 ContextChart.propTypes = propTypes;
-ContextChart.defaultProps = defaultProps;
+ContextChart.defaultProps = {
+  annotations: [],
+  height: 150,
+  width: 1,
+  xAxisFormatter: multiFormat,
+  xAxisHeight: 50,
+  xAxisPlacement: AxisPlacement.BOTTOM,
+  zoomable: true,
+};
 
-export default withDisplayName('ContextChart', props => {
-  const newProps = { ...props };
-  if (props.width === undefined) {
-    delete newProps.width;
-  }
+const SizedContextChart = ({ width: explicitWidth, ...rest }) => {
+  const { ref, width } = useResizeDetector();
   return (
-    <ScalerContext.Consumer>
-      {({ domainsByItemId, subDomainsByItemId, updateDomains, series }) => (
-        <SizeMe monitorWidth>
-          {({ size }) => (
-            <ContextChart
-              width={size.width}
-              series={series}
-              {...newProps}
-              subDomainsByItemId={subDomainsByItemId}
-              domainsByItemId={domainsByItemId}
-              updateDomains={updateDomains}
-            />
-          )}
-        </SizeMe>
-      )}
-    </ScalerContext.Consumer>
+    <div ref={ref} style={{ width: '100%' }}>
+      <ContextChart
+        {...rest}
+        width={explicitWidth !== undefined ? explicitWidth : width || 1}
+      />
+    </div>
   );
-});
+};
+SizedContextChart.propTypes = {
+  width: PropTypes.number,
+};
+SizedContextChart.defaultProps = {
+  width: undefined,
+};
+
+export default withDisplayName('ContextChart', props => (
+  <ScalerContext.Consumer>
+    {({ domainsByItemId, subDomainsByItemId, updateDomains, series }) => (
+      <SizedContextChart
+        {...props}
+        series={series}
+        subDomainsByItemId={subDomainsByItemId}
+        domainsByItemId={domainsByItemId}
+        updateDomains={updateDomains}
+      />
+    )}
+  </ScalerContext.Consumer>
+));

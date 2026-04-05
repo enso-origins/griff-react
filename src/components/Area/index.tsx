@@ -1,5 +1,4 @@
 import React from 'react';
-import * as PropTypes from 'prop-types';
 
 export interface Position {
   xpos: number;
@@ -38,21 +37,6 @@ const Area: React.FunctionComponent<Props> = ({
       style={{ stroke: color, fill: color, fillOpacity: opacity }}
     />
   );
-};
-
-Area.propTypes = {
-  id: PropTypes.string.isRequired,
-  color: PropTypes.string,
-  xMin: PropTypes.number.isRequired,
-  xMax: PropTypes.number.isRequired,
-  yMin: PropTypes.number.isRequired,
-  yMax: PropTypes.number.isRequired,
-  opacity: PropTypes.number,
-};
-
-Area.defaultProps = {
-  color: '#000',
-  opacity: 0.15,
 };
 
 export default Area;

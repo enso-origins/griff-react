@@ -85,7 +85,6 @@ const Series: React.FunctionComponent<Props & InternalProps> = ({
   id,
   registerSeries,
   updateSeries,
-  children,
 
   // Below are all of the series props.
   ...props
