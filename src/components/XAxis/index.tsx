@@ -1,15 +1,15 @@
+import React from 'react';
+import * as d3 from 'd3';
+import { useResizeDetector } from 'react-resize-detector';
 import AxisPlacement, {
   AxisPlacement as AxisPlacementType,
-} from 'components/AxisPlacement';
-import { DomainsByItemId } from 'components/Scaler';
-import ZoomRect from 'components/ZoomRect';
-import ScalerContext from 'context/Scaler';
-import * as d3 from 'd3';
-import { Domain, Series } from 'external';
-import React from 'react';
-import { useResizeDetector } from 'react-resize-detector';
-import { withDisplayName } from 'utils/displayName';
-import { createXScale, ScalerFunctionFactory } from 'utils/scale-helpers';
+} from '../AxisPlacement';
+import { DomainsByItemId } from '../Scaler';
+import ZoomRect from '../ZoomRect';
+import ScalerContext from '../../context/Scaler';
+import { Domain, Series } from '../../external';
+import { withDisplayName } from '../../utils/displayName';
+import { createXScale, ScalerFunctionFactory } from '../../utils/scale-helpers';
 
 export interface Props extends ScalerProps {
   axis: 'time' | 'x';

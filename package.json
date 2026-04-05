@@ -4,6 +4,7 @@
   "description": "Charting library that relies on React's virtual diffing.",
   "main": "lib/index.js",
   "module": "es/index.js",
+  "types": "lib/src/index.d.ts",
   "files": [
     "css",
     "es",
@@ -64,6 +65,7 @@
     "babel-loader": "^8.0.6",
     "chart.js": "^2.8.0",
     "csstype": "^2.6.3",
+    "dts-bundle-generator": "^9.5.1",
     "eslint": "^6.6.0",
     "eslint-config-airbnb": "18.2.1",
     "eslint-config-prettier": "6.15.0",
