@@ -162,7 +162,7 @@
 
 "@cognite/griff-react@github:enso-origins/griff-react":
   version "0.5.0-rc.0"
-  resolved "https://codeload.github.com/enso-origins/griff-react/tar.gz/0eaff886a7062c57b4b8d0951cefeb6733ba6943"
+  resolved "https://codeload.github.com/enso-origins/griff-react/tar.gz/f7416daed67081d7d09b89e50a1648a8840648b8"
   dependencies:
     bluebird "3.7.2"
     d3 "^7.9.0"
