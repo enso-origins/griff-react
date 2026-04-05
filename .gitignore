@@ -8,8 +8,7 @@
 /node_modules
 /storybook-static
 /umd
-es/
-lib/
+# es/ and lib/ are committed so `yarn add github:...` works without devDeps
 npm-debug.log*
 yarn-error.log
 .claude
