@@ -15,6 +15,7 @@ Join us on Slack at [cognite-community.slack.com](https://cognite-community.slac
 (Get invited to join the Slack workspace [here](http://join-slack.cogniteapp.com))
 
 ## Storybook & demo
+
 Our tip-of-tree Storybook can be found on [griff-master.surge.sh](https://griff-master.surge.sh)
 
 ## Test locally
@@ -23,6 +24,8 @@ Our tip-of-tree Storybook can be found on [griff-master.surge.sh](https://griff-
 git clone https://github.com/cognitedata/griff-react
 yarn
 yarn storybook #starts the stories
+
+NODE_OPTIONS=--openssl-legacy-provider yarn storybook #starts the storyboard in case of OpenSSL errors on newer Node versions
 ```
 
 ## Usage
