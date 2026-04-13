@@ -1,6 +1,6 @@
 import React from 'react';
-import RulerTooltip from '../RulerTooltip';
 import { ItemId } from '../../external';
+import RulerTooltip from '../RulerTooltip';
 
 export interface RulerConfig {
   visible: boolean;
@@ -55,7 +55,7 @@ const calculateY = (points: RulerPoint[], yTooltipPosition: number) => {
       prevPoint !== undefined &&
       prevPoint + labelHeight > pointsSorted[i].y
     ) {
-      prevPoint += labelHeight;
+      prevPoint += labelHeight * 1.5; // offset by 50% more to avoid overlap
     } else {
       prevPoint = pointsSorted[i].y;
     }

@@ -252,6 +252,30 @@ class Brush extends React.Component<Props, State> {
           stroke="none"
           onMouseDown={this.onMouseDownHandleWest}
         />
+        <circle
+          className="handle-target handle-target--west"
+          cursor={disabledCursor || 'ew-resize'}
+          stroke={handleColor}
+          fill={handleColor}
+          strokeWidth={handleWidth}
+          cx={selection[0] - handleTargetWidth / 2 + 4}
+          cy={height / 4}
+          r={8}
+          pointerEvents="all"
+          onMouseDown={this.onMouseDownHandleWest}
+        />
+        <circle
+          className="handle-target handle-target--east"
+          cursor={disabledCursor || 'ew-resize'}
+          stroke={handleColor}
+          fill={handleColor}
+          strokeWidth={handleWidth}
+          cx={selection[1] - handleTargetWidth / 2 + 4}
+          cy={height / 4}
+          r={8}
+          pointerEvents="all"
+          onMouseDown={this.onMouseDownHandleEast}
+        />
         <path
           className="handle handle--east"
           stroke={handleColor}

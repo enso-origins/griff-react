@@ -122,13 +122,13 @@ const ContextChart = ({
     <>
       {renderXAxis(AxisPlacement.TOP, xAxis, { xAxisPlacement })}
       <svg
-        height={height}
+        height={height / 2}
         width={width}
         style={{ width: '100%', display: 'block' }}
       >
         {annotations}
         <LineCollection
-          series={series.map(s => ({ ...s, drawPoints: false }))}
+          series={series.map(s => ({ ...s, drawPoints: false, hidden: true }))}
           width={width}
           height={height}
           yScalerFactory={getYScale}
