@@ -1,12 +1,13 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
 import DataContext from '../../context/Data';
 import ScalerContext from '../../context/Scaler';
-import GriffPropTypes, { seriesPropType } from '../../utils/proptypes';
-import Axes, { Domains } from '../../utils/Axes';
-import { Domain, Series, Collection } from '../../external';
+import { Collection, Domain, Series } from '../../external';
 import { Item } from '../../internal';
+import Axes, { Domains } from '../../utils/Axes';
 import { withDisplayName } from '../../utils/displayName';
+import { placeholder } from '../../utils/placeholderDomain';
+import GriffPropTypes, { seriesPropType } from '../../utils/proptypes';
 
 // TODO: Move this to DataProvider.
 type OnTimeSubDomainChanged = (timeSubDomain: Domain) => void;
@@ -55,16 +56,6 @@ interface StateUpdates {
 // If the timeSubDomain is within this margin, consider it to be attached to
 // the leading edge of the timeDomain.
 const FRONT_OF_WINDOW_THRESHOLD = 0.05;
-
-/**
- * Provide a placeholder domain so that we can test for validity later, but
- * it can be safely operated on like a real domain.
- */
-export const placeholder = (min: number, max: number): Domain => {
-  const domain: Domain = [min, max];
-  domain.placeholder = true;
-  return domain;
-};
 
 const haveDomainsChanged = (before: Item, after: Item) =>
   !isEqual(before.timeDomain, after.timeDomain) ||

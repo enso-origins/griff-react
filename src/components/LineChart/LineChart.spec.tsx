@@ -14,7 +14,7 @@ describe('LineChart', () => {
     } = render(<Base size={DEFAULT_SIZE} />);
 
     await waitFor(() => {
-      expect(queryAllByTestId('Line-Series-1')).toHaveLength(2);
+      expect(queryAllByTestId('Line-Series-1')).toHaveLength(1);
     });
     expect(getAllByTestId('xAxis')).toHaveLength(2);
     expect(getByTestId('yAxis-Series-1')).toBeInTheDocument();
@@ -30,9 +30,9 @@ describe('LineChart', () => {
     } = render(<MultiSeries size={DEFAULT_SIZE} />);
 
     await waitFor(() => {
-      expect(queryAllByTestId('Line-Series-1')).toHaveLength(2);
-      expect(queryAllByTestId('Line-Series-2')).toHaveLength(2);
-      expect(queryAllByTestId('Line-Series-3')).toHaveLength(2);
+      expect(queryAllByTestId('Line-Series-1')).toHaveLength(1);
+      expect(queryAllByTestId('Line-Series-2')).toHaveLength(1);
+      expect(queryAllByTestId('Line-Series-3')).toHaveLength(1);
     });
     expect(getAllByTestId('xAxis')).toHaveLength(2);
     expect(getByTestId('yAxis-Series-1')).toBeInTheDocument();
@@ -51,9 +51,9 @@ describe('LineChart', () => {
     } = render(<MultiSeriesCollection size={DEFAULT_SIZE} />);
 
     await waitFor(() => {
-      expect(queryAllByTestId('Line-Series-1')).toHaveLength(2);
-      expect(queryAllByTestId('Line-Series-2')).toHaveLength(2);
-      expect(queryAllByTestId('Line-Series-3')).toHaveLength(2);
+      expect(queryAllByTestId('Line-Series-1')).toHaveLength(1);
+      expect(queryAllByTestId('Line-Series-2')).toHaveLength(1);
+      expect(queryAllByTestId('Line-Series-3')).toHaveLength(1);
     });
     expect(getAllByTestId('xAxis')).toHaveLength(2);
     expect(getByTestId('yAxis-Collection-1')).toBeInTheDocument();

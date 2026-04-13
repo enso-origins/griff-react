@@ -24,11 +24,6 @@ export interface DomainsByItemId {
 }
 export interface OnDomainsUpdated extends Function {
 }
-/**
- * Provide a placeholder domain so that we can test for validity later, but
- * it can be safely operated on like a real domain.
- */
-export declare const placeholder: (min: number, max: number) => Domain;
 export declare const firstResolvedDomain: (domain: Domain | undefined, ...domains: (undefined | Domain)[]) => Domain | undefined;
 declare const _default: (props: Props) => import("react/jsx-runtime").JSX.Element;
 export default _default;
