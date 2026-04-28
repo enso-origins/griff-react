@@ -1862,7 +1862,13 @@ var DataProvider = /** @class */ (function (_super) {
         _this.renderLegacyItems = function () {
             var _a = _this.props, series = _a.series, collections = _a.collections;
             if (series || collections) {
-                return (jsxs(Fragment, { children: [(series || []).map(function (s) { return (jsx(Series$1, __assign({}, s), s.id)); }), (collections || []).map(function (c) { return (jsx(Collection$1, __assign({}, c), c.id)); })] }));
+                return (jsxs(Fragment, { children: [(series || []).map(function (_a) {
+                            var _k = _a.key, s = __rest(_a, ["key"]);
+                            return (jsx(Series$1, __assign({}, s), s.id));
+                        }), (collections || []).map(function (_a) {
+                            var _k = _a.key, c = __rest(_a, ["key"]);
+                            return (jsx(Collection$1, __assign({}, c), c.id));
+                        })] }));
             }
             return null;
         };
@@ -3626,7 +3632,7 @@ var LineChart = function (_a) {
                     return React.cloneElement(child, childProps);
                 }), jsx(LineCollection$1, { height: chartSize.height, width: chartSize.width, pointWidth: pointWidth }), // sizeMe can cause chartSize.width to be < 0, which causes
                 // problems for the position of the ruler in InteractionLayer
-                chartSize.width > 0 && (jsx(InteractionLayer$1, { height: chartSize.height, width: chartSize.width, crosshair: crosshair, onMouseMove: onMouseMove, onMouseOut: onMouseOut, onBlur: onBlur, onClickAnnotation: onClickAnnotation, onDoubleClick: onDoubleClick, ruler: ruler, annotations: annotations, onClick: onClick, areas: areas, onAreaDefined: onAreaDefined, onZoomXAxis: onZoomXAxis, onAreaClicked: onAreaClicked, zoomAxes: { time: zoomable } }))] }), yAxis: jsx(AxisCollection$1, { zoomable: zoomable, axisDisplayMode: yAxisDisplayMode, onMouseEnter: onAxisMouseEnter, onMouseLeave: onAxisMouseLeave, height: chartSize.height, tickFormatter: yAxisFormatter, yAxisWidth: yAxisWidth, ticks: yAxisTicks }), xAxis: jsx(XAxis$1, { width: chartWidth, domain: xSubDomain, height: xAxisHeight, placement: xAxisPlacement, tickFormatter: xAxisFormatter }), contextChart: contextChart.visible && (jsx(ContextChart$1, { width: chartWidth, height: contextChartSpace, zoomable: zoomable, annotations: annotations, xAxisFormatter: xAxisFormatter, xAxisHeight: xAxisHeight, xAxisPlacement: xAxisPlacement })) }));
+                chartSize.width > 0 && (jsx(InteractionLayer$1, { height: chartSize.height, width: chartSize.width, crosshair: crosshair, onMouseMove: onMouseMove, onMouseOut: onMouseOut, onBlur: onBlur, onClickAnnotation: onClickAnnotation, onDoubleClick: onDoubleClick, ruler: ruler, annotations: annotations, onClick: onClick, areas: areas, onAreaDefined: onAreaDefined, onZoomXAxis: onZoomXAxis, onAreaClicked: onAreaClicked, zoomAxes: { time: zoomable } }))] }), yAxis: jsx(AxisCollection$1, { zoomable: zoomable, axisDisplayMode: yAxisDisplayMode, onMouseEnter: onAxisMouseEnter, onMouseLeave: onAxisMouseLeave, height: chartSize.height, tickFormatter: yAxisFormatter, yAxisWidth: yAxisWidth, ticks: yAxisTicks }), xAxis: jsx(XAxis$1, { width: chartSize.width, domain: xSubDomain, height: xAxisHeight, placement: xAxisPlacement, tickFormatter: xAxisFormatter }), contextChart: contextChart.visible && (jsx(ContextChart$1, { width: chartSize.width, height: contextChartSpace, zoomable: zoomable, annotations: annotations, xAxisFormatter: xAxisFormatter, xAxisHeight: xAxisHeight, xAxisPlacement: xAxisPlacement })) }));
 };
 LineChart.propTypes = propTypes$6;
 LineChart.defaultProps = {
