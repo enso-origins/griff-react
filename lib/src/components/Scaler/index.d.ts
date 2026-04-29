@@ -1,7 +1,7 @@
 import React from 'react';
 import DataContext from '../../context/Data';
+import { Collection, Domain, Series } from '../../external';
 import { Domains } from '../../utils/Axes';
-import { Domain, Series, Collection } from '../../external';
 type OnTimeSubDomainChanged = (timeSubDomain: Domain) => void;
 type LimitTimeSubDomain = (timeSubDomain: Domain) => Domain;
 type OnUpdateDomains = (subDomains: DomainsByItemId) => void;

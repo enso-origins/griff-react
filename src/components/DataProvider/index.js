@@ -548,10 +548,10 @@ export default class DataProvider extends Component {
     if (series || collections) {
       return (
         <>
-          {(series || []).map(s => (
+          {(series || []).map(({ key: _k, ...s }) => (
             <Series key={s.id} {...s} />
           ))}
-          {(collections || []).map(c => (
+          {(collections || []).map(({ key: _k, ...c }) => (
             <Collection key={c.id} {...c} />
           ))}
         </>

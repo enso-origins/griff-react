@@ -305,7 +305,7 @@ const LineChart = ({
       }
       xAxis={
         <XAxis
-          width={chartWidth}
+          width={chartSize.width}
           domain={xSubDomain}
           height={xAxisHeight}
           placement={xAxisPlacement}
@@ -315,7 +315,7 @@ const LineChart = ({
       contextChart={
         contextChart.visible && (
           <ContextChart
-            width={chartWidth}
+            width={chartSize.width}
             height={contextChartSpace}
             zoomable={zoomable}
             annotations={annotations}
